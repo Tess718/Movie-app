@@ -101,7 +101,7 @@ const App = () => {
 
             <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           </div>
-        <div className="basis-1/2 mt-40 md:mt-0">
+        <div className="basis-1/2 mt-20 md:mt-0">
         <div className='flex md:justify-end justify-center'>
           <img src="https://i.pinimg.com/736x/46/7d/94/467d9422c34a27a813e84d4da80a0cb1.jpg" className='lg:h-[500px] h-[250px] md:w-1/2  object-center object-cover relative z-3 -mr-[25%] md:mr-0' alt="" />
           <img src="https://i.pinimg.com/736x/98/e9/02/98e9023feae76e0ec5ed55df24f95b85.jpg" className='lg:h-[500px] h-[250px] md:w-1/2  object-center md:-ml-[25%] -mt-20  object-cover' alt="" />
