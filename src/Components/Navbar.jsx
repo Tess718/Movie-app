@@ -15,8 +15,8 @@ const Navbar = () => {
       </div>
       
       <ul className={`md:flex gap-5 absolute md:static bg-gray-900 w-full h-full md:h-auto md:w-auto left-0 top-16 md:top-auto px-5 md:px-0 py-5 md:py-0 transition-all z-5 text-center lg:text-start ${isOpen ? 'block' : 'hidden'}`}>
-        <a href="#trending" className='block py-2 md:py-0'><li>Trending</li></a>
-        <a href="#all-movies" className='block py-2 md:py-0'><li>All movies</li></a>
+        <a href="#trending" className='block py-2 md:py-0' onClick={()=> setIsOpen(!isOpen)}><li>Trending</li></a>
+        <a href="#all-movies" className='block py-2 md:py-0' onClick={()=> setIsOpen(!isOpen)}><li>All movies</li></a>
       </ul>
     </nav>
   );
