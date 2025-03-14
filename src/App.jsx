@@ -94,10 +94,10 @@ const App = () => {
   return (
     <div className='lg:px-[70px] px-5'>
       <Navbar />
-      <div className='flex h-dvh items-center justify-between flex-col-reverse md:flex-row gap-10 lg:gap-0'>
+      <div className='flex md:pt-[10%] items-center justify-between flex-col-reverse md:flex-row gap-10 lg:gap-0'>
         <div className='basis-1/2'>
-            <h1 className='lg:text-6xl text-3xl text-center lg:text-start'>FIND MOVIES <br /> <span className='text-gradient'>TVSHOWS AND MORE</span> </h1>
-            <p className='text-white text-center lg:text-start'>Discover the ultimate movie hub, where cinema lovers explore the latest blockbusters, timeless classics, and hidden gems. Dive into reviews, trailers, and exclusive behind-the-scenes content, all in one place!</p>
+            <h1 className='lg:text-6xl md:text-4xl md:leading-12 lg:leading-tight text-3xl text-center md:text-start'>FIND MOVIES <br /> <span className='text-gradient'>TVSHOWS AND MORE</span> </h1>
+            <p className='text-white text-center md:text-start'>Discover the ultimate movie hub, where cinema lovers explore the latest blockbusters, timeless classics, and hidden gems. Dive into reviews, trailers, and exclusive behind-the-scenes content, all in one place!</p>
 
             <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           </div>
