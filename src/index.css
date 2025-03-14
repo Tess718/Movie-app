@@ -75,7 +75,7 @@
   }
 
   .search {
-    @apply w-full bg-light-100/5 px-4 py- mt-10 max-w-3xl mx-auto;
+    @apply w-full bg-light-100/5 px-4 mt-10 max-w-3xl mx-auto;
 
     & div {
       @apply relative flex items-center;
