@@ -5,6 +5,7 @@ import Spinner from './Components/Spinner';
 import Moviecard from './Components/Moviecard';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
 import Navbar from './Components/Navbar';
+import Moviemodal from './Components/Moviemodal';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -30,6 +31,11 @@ const App = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
 
   const [debouncedSearchTerm] = useDebounce(searchTerm, 1000); 
+
+  const [selectedMovie, setSelectedMovie] = useState(null)
+
+  const [showModal, setShowModal] = useState(false)
+
 
 
   const fetchMovies = async (query = '') => {
@@ -75,6 +81,24 @@ const App = () => {
       setTrendingMovies(movies);
     }catch(error){
       console.error(`Error loading trending movies: ${error}`)
+  }
+}
+
+
+  const handleMovieClick = async (movieId) => {
+  try {
+    const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    })
+
+    const data = await res.json()
+    setSelectedMovie(data)
+    setShowModal(true)
+  } catch (error) {
+    console.error('Error loading movie details:', error)
   }
 }
 
@@ -134,11 +158,15 @@ const App = () => {
             <p className='text-red-500'>{errorMessage}</p>
           ) : ( <ul>
             {movieList.map((movie) => (
-              <Moviecard key={movie.id} movie={movie}/>
+              <Moviecard key={movie.id} movie={movie} onClick={handleMovieClick} />
             ))}
           </ul>
           )}  
       </section>
+
+      {showModal && selectedMovie && (
+  <Moviemodal movie={selectedMovie} onClose={() => setShowModal(false)} />
+)}
 
       <div className="footer text-white mt-20">
         <hr />
