@@ -85,22 +85,41 @@ const App = () => {
 }
 
 
-  const handleMovieClick = async (movieId) => {
+const handleMovieClick = async (movieId) => {
   try {
     const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
       headers: {
         accept: 'application/json',
         Authorization: `Bearer ${API_KEY}`,
       },
-    })
+    });
+    const data = await res.json();
 
-    const data = await res.json()
-    setSelectedMovie(data)
-    setShowModal(true)
+    // fetch trailer
+    const videoRes = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
+    const videoData = await videoRes.json();
+
+    // Get first YouTube trailer
+    const trailer = videoData.results.find(
+      (vid) => vid.type === 'Trailer' && vid.site === 'YouTube'
+    );
+
+    setSelectedMovie({
+      ...data,
+      trailerKey: trailer?.key || null,
+    });
+
+    setShowModal(true);
   } catch (error) {
-    console.error('Error loading movie details:', error)
+    console.error('Error loading movie details or trailer:', error);
   }
-}
+};
+
 
 
 

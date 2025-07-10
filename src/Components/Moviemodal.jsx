@@ -34,7 +34,7 @@ const MovieModal = ({ movie, onClose }) => {
         </button>
 
         {/* Header */}
-        <h1 className="text-3xl font-semibold mb-2">{title}</h1>
+        <h2 className="text-3xl font-semibold mb-2">{title}</h2>
         <p className="text-gray-400">
           {year} • {movie.adult ? '18+' : 'PG-13'} • {runtime} min
         </p>
@@ -60,6 +60,23 @@ const MovieModal = ({ movie, onClose }) => {
               className="rounded-xl w-full h-full object-cover"
             />
           </div>
+        </div>
+
+          {/* Trailer */}
+        <div className="mt-6">
+          {movie.trailerKey ? (
+              <div className="aspect-video mb-4">
+                <iframe
+                  className="w-full h-full rounded-lg"
+                  src={`https://www.youtube.com/embed/${movie.trailerKey}`}
+                  frameBorder="0"
+                  allowFullScreen
+                  title="Movie Trailer"
+                ></iframe>
+              </div>
+            ) : (
+              <p>No trailer available.</p>
+            )}
         </div>
 
         {/* Genres */}
@@ -114,7 +131,7 @@ const MovieModal = ({ movie, onClose }) => {
               href={homepage}
               target="_blank"
               rel="noreferrer"
-              className="inline-block bg-purple-600 text-white px-5 py-2 rounded-full hover:bg-purple-700"
+              className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full"
             >
               Visit Homepage →
             </a>
