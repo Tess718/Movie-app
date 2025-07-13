@@ -3,7 +3,7 @@ const Moviecard = ({ movie, onClick }) => {
 
   return (
     <div className="movie-card cursor-pointer" onClick={() => onClick(movie.id)}>
-      <img src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : '/No-Movie.svg'} alt={title} />
+      <img src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : '/No-Movie.svg'} alt={title} loading="lazy" />
       <div className="mt-4">
         <h3>{title}</h3>
         <div className="content">

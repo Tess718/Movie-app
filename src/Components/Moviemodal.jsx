@@ -23,7 +23,7 @@ const MovieModal = ({ movie, onClose }) => {
   const year = release_date ? release_date.split('-')[0] : 'NA';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6" onClick={onClose}>
       <div className="bg-[#1c1c28] text-white max-w-5xl w-full rounded-2xl p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
         {/* Close Button */}
         <button
@@ -52,12 +52,14 @@ const MovieModal = ({ movie, onClose }) => {
             src={`https://image.tmdb.org/t/p/w300/${poster_path}`}
             alt={title}
             className="rounded-xl w-full md:w-[200px] object-cover"
+            loading="lazy"
           />
           <div className="flex-1">
             <img
               src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`}
               alt="Backdrop"
               className="rounded-xl w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
         </div>

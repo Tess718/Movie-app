@@ -36,43 +36,50 @@ const App = () => {
 
   const [showModal, setShowModal] = useState(false)
 
+  const [isModalLoading, setIsModalLoading] = useState(false);
+
+  
 
 
-  const fetchMovies = async (query = '') => {
 
-    setIsLoading(true);
-    setErrorMessage('');
 
-    try{
-      const endpoint = query 
-      ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-      : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+ const fetchMovies = async (query = '') => {
+  setIsLoading(true);
+  setErrorMessage('');
 
-      const response = await fetch(endpoint, API_OPTIONS);
-      
-      if(!response.ok){
-        throw new Error('Failed to fetch movies');
-      }
-      const data = await response.json();
+  try {
+    const page1Url = query
+      ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=1`
+      : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&page=1`;
 
-      if (data.response === false){
-        setErrorMessage(data.error || 'Failed to fetch movies');
-        setMovieList([]);
-        return;
-      }
+    const page2Url = query
+      ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=2`
+      : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&page=2`;
 
-      setMovieList(data.results || []);
+    const [res1, res2] = await Promise.all([
+      fetch(page1Url, API_OPTIONS),
+      fetch(page2Url, API_OPTIONS),
+    ]);
 
-      if(query && data.results.length > 0){
-        await updateSearchCount(query, data.results[0]);
-      }
-    } catch(error){
-      console.error(`Error fetching movies: ${error}`)
-      setErrorMessage('Error fetching movies please try again later')
-    } finally {
-      setIsLoading(false);
+    if (!res1.ok || !res2.ok) throw new Error('Failed to fetch movies');
+
+    const [data1, data2] = await Promise.all([res1.json(), res2.json()]);
+
+    const combined = [...data1.results, ...data2.results].slice(0, 24);
+
+    setMovieList(combined);
+
+    if (query && data1.results.length > 0) {
+      await updateSearchCount(query, data1.results[0]);
     }
+  } catch (error) {
+    console.error(`Error fetching movies: ${error}`);
+    setErrorMessage('Error fetching movies, please try again later');
+  } finally {
+    setIsLoading(false);
   }
+};
+
 
   const loadTrendingMovies = async () => {
     try{
@@ -86,6 +93,8 @@ const App = () => {
 
 
 const handleMovieClick = async (movieId) => {
+  setIsModalLoading(true);
+  setSelectedMovie(null);      
   try {
     const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
       headers: {
@@ -120,6 +129,12 @@ const handleMovieClick = async (movieId) => {
   }
 };
 
+
+const handleCloseModal = () => {
+  setShowModal(false);
+  setSelectedMovie(null);
+  setIsModalLoading(false); // <-- ensure loading is cleared
+};
 
 
 
@@ -183,9 +198,17 @@ const handleMovieClick = async (movieId) => {
           )}  
       </section>
 
+      
+      
+      {isModalLoading && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <Spinner /> {/* or any loader */}
+        </div>
+      )}
+
       {showModal && selectedMovie && (
-  <Moviemodal movie={selectedMovie} onClose={() => setShowModal(false)} />
-)}
+        <Moviemodal movie={selectedMovie} onClose={handleCloseModal}/>
+      )}
 
       <div className="footer text-white mt-20">
         <hr />
