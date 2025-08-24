@@ -75,9 +75,14 @@ const Navbar = () => {
 
 
         {/* Auth Buttons */}
+        <div className="max-sm:flex  max-sm:justify-center">
         {user ? (
           <button
-            onClick={handleLogout}
+             onClick={() => {
+              handleLogout();
+              setIsOpen(false);
+            }}
+
             className="block py-2 md:py-0 text-red-400 hover:text-red-500 cursor-pointer"
           >
             <LogOut />
@@ -85,12 +90,14 @@ const Navbar = () => {
         ) : (
           <Link
             to={"/auth"}
-            className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500 max-sm:flex  max-sm:justify-center"
+            className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500 "
             onClick={() => setIsOpen(false)}
           >
             <CircleUser />
           </Link>
         )}
+
+        </div>
       </ul>
 
       {toast && <Toast message={toast} onClose={() => setToast("")} />}
