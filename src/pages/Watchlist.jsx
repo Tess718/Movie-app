@@ -45,7 +45,7 @@ const Watchlist = () => {
     <div className="p-6">
         <div className="mb-6 border-b border-gray-700 pb-6">
             <Link to={"/"}>
-                <button className="bg-gray-800 text-white px-4 py-2 rounded flex gap-1">
+                <button className="bg-gray-800 text-white px-4 py-2 rounded flex gap-1 cursor-pointer">
                 <ArrowBigLeftDash /> Return to Home
                 </button>
             </Link>
@@ -65,7 +65,7 @@ const Watchlist = () => {
               <h3 className="text-sm font-semibold text-white">{movie.title}</h3>
               <button
                 onClick={() => handleRemove(movie.$id)}
-                className="mt-2 text-xs text-red-400 hover:underline"
+                className="mt-2 text-xs text-red-400 hover:underline cursor-pointer"
               >
                 Remove
               </button>

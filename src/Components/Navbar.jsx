@@ -74,18 +74,18 @@ const Navbar = () => {
         {user ? (
           <button
             onClick={handleLogout}
-            className="block py-2 md:py-0 text-red-400 hover:text-red-500"
+            className="block py-2 md:py-0 text-red-400 hover:text-red-500 cursor-pointer"
           >
             <LogOut />
           </button>
         ) : (
-          <a
-            href="/auth"
+          <Link
+            to={"/auth"}
             className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500"
             onClick={() => setIsOpen(false)}
           >
             <CircleUser />
-          </a>
+          </Link>
         )}
       </ul>
     </nav>

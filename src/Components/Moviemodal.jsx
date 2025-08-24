@@ -153,7 +153,7 @@ const MovieModal = ({ movie, onClose }) => {
               <button
                 onClick={handleAdd}
                 type="button"
-                className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full mt-5"
+                className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full mt-5 cursor-pointer"
               >
             ➕ Add to Watchlist
             </button>
