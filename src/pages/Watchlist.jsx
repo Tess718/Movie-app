@@ -39,7 +39,10 @@ const Watchlist = () => {
   if (loading) return <div className="flex justify-center items-center h-screen">
     <Spinner />
   </div> ;
-  if (!user) return <p className="text-center mt-10">Please log in to see your watchlist.</p>;
+  if (!user) return <div className="flex justify-center items-center min-h-screen text-white flex-col lg:flex-row">
+        <img src="/pls-login.png" alt="Please Login" />
+        <p className="text-center mt-10 text-3xl">Please <Link to={"/auth"} className="text-blue-001" >log in</Link> to see your watchlist.</p>
+  </div> 
 
   return (
     <div className="p-6">

@@ -5,11 +5,13 @@ import { account } from "../appwrite"; // ✅ import account
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { CircleUser, LogOut } from "lucide-react";
+import Toast from "./Toast";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState(null); // track logged in user
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+    const [toast, setToast] = useState("");
 
   // Check if user is logged in
   useEffect(() => {
@@ -29,9 +31,11 @@ const Navbar = () => {
     try {
       await account.deleteSession("current"); // logs out current session
       setUser(null);
+      setToast("✅ Logged out successfully!");
       navigate("/"); // redirect to home after logout
     } catch (err) {
-      console.error("Logout failed:", err);
+      setToast("❌ Error logging out");
+      console.log(err);
     }
   };
 
@@ -88,6 +92,8 @@ const Navbar = () => {
           </Link>
         )}
       </ul>
+
+      {toast && <Toast message={toast} onClose={() => setToast("")} />}
     </nav>
   );
 };

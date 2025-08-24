@@ -87,7 +87,7 @@ const Auth = () => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 py-2 rounded font-semibold"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 py-2 rounded font-semibold cursor-pointer"
           >
             {isLogin ? "Login" : "Sign Up"}
           </button>
@@ -96,7 +96,7 @@ const Auth = () => {
         <p className="text-center mt-4 text-sm">
           {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
           <button
-            className="text-indigo-400 hover:underline"
+            className="text-indigo-400 hover:underline cursor-pointer"
             onClick={() => {
               setIsLogin(!isLogin);
               setMessage("");
