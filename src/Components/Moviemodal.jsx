@@ -1,3 +1,9 @@
+
+import { useState, useEffect } from "react";
+import { addToWatchlist } from "../appwrite";
+import { account } from "../appwrite";
+
+
 const MovieModal = ({ movie, onClose }) => {
   if (!movie) return null;
 
@@ -19,8 +25,39 @@ const MovieModal = ({ movie, onClose }) => {
     tagline,
     production_countries = []
   } = movie;
-
+  
   const year = release_date ? release_date.split('-')[0] : 'NA';
+  
+  useEffect(() => {
+   // Check if logged in
+   account.get().then(
+     (user) => setUserId(user.$id),
+     () => setUserId(null)
+   );
+ }, []);
+
+
+    const [userId, setUserId] = useState(null);
+    const [message, setMessage] = useState("");
+
+  const handleAdd = async () => {
+  try {
+    const user = await account.get();
+    const res = await addToWatchlist(user.$id, movie);
+
+    if (!res.success) {
+      setMessage("⚠️ " + res.message);
+    } else {
+      setMessage("✅ " + res.message);
+    }
+  } catch (err) {
+    setMessage("❌ Failed to add movie.");
+    console.error(err);
+  }
+};
+
+  if (!movie) return null;
+  
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6" onClick={onClose}>
@@ -112,6 +149,12 @@ const MovieModal = ({ movie, onClose }) => {
               <span className="text-white font-medium">Language:</span>{' '}
               {spoken_languages.map(l => l.english_name).join(', ') || original_language}
             </p>
+            <button
+          onClick={handleAdd}
+          className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full mt-5"
+        >
+          ➕ Add to Watchlist
+        </button>
           </div>
           <div>
             <p><span className="text-white font-medium">Budget:</span> ${budget?.toLocaleString() || 'N/A'}</p>
@@ -123,12 +166,10 @@ const MovieModal = ({ movie, onClose }) => {
               <span className="text-white font-medium">Production:</span>{' '}
               {production_companies.map(c => c.name).join(', ') || 'N/A'}
             </p>
-          </div>
-        </div>
 
-        {/* Homepage Button */}
+            {/* Homepage Button */}
         {homepage && (
-          <div className="mt-6">
+          <div className="mt-5">
             <a
               href={homepage}
               target="_blank"
@@ -139,6 +180,14 @@ const MovieModal = ({ movie, onClose }) => {
             </a>
           </div>
         )}
+
+          </div>
+        </div>
+
+
+
+        {message && <p className="mt-3 text-sm text-center">{message}</p>}
+
       </div>
     </div>
   );
