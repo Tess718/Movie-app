@@ -4,11 +4,14 @@ import { account, getWatchlist, removeFromWatchlist } from "../appwrite";
 import { ArrowBigLeftDash } from "lucide-react";
 import { Link } from "react-router-dom";
 import Spinner from "../Components/Spinner";
+import Moviemodal from "../Components/Moviemodal";
+
 
 const Watchlist = () => {
   const [user, setUser] = useState(null);
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -59,7 +62,11 @@ const Watchlist = () => {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {watchlist.map((movie) => (
-            <div key={movie.$id} className="bg-gray-800 p-3 rounded">
+            <div key={movie.$id} 
+            className="bg-gray-800 p-3 rounded cursor-pointer"
+            onClick={() => setSelectedMovie(movie)}
+
+            >
               <img
                 src={movie.posterUrl}
                 alt={movie.title}
@@ -75,6 +82,13 @@ const Watchlist = () => {
             </div>
           ))}
         </div>
+      )}
+
+       {selectedMovie && (
+        <Moviemodal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
       )}
     </div>
   );

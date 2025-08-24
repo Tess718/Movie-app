@@ -47,6 +47,7 @@
   header img {
     @apply w-full max-w-lg h-auto object-contain mx-auto drop-shadow-md;
   }
+
 }
 
 @layer components {
@@ -70,12 +71,12 @@
     }
 
     & ul li img {
-      @apply w-[127px] h-[163px] object-cover -ml-3.5;
+      @apply w-[127px] h-[163px] object-cover -ml-3.5 rounded;
     }
   }
 
   .search {
-    @apply w-full bg-light-100/5 px-4 mt-10 max-w-3xl mx-auto;
+    @apply w-full bg-light-100/5 px-4 mt-10 max-w-3xl mx-auto rounded;
 
     & div {
       @apply relative flex items-center;
@@ -101,7 +102,7 @@
   .movie-card {
 
     & img {
-      @apply h-auto w-full;
+      @apply h-auto w-full rounded;
     }
 
     & h3 {
@@ -155,4 +156,8 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.bg-img{
+  background: url('/BG.png') no-repeat center center/cover;
 }

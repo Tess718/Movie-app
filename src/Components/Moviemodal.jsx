@@ -61,7 +61,7 @@ const MovieModal = ({ movie, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6" onClick={onClose}>
-      <div className="bg-[#1c1c28] text-white max-w-5xl w-full rounded-2xl p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
+      <div className="bg-[#1c1c28] text-white max-w-5xl w-full rounded p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -86,16 +86,16 @@ const MovieModal = ({ movie, onClose }) => {
         {/* Poster + Trailer Section */}
         <div className="mt-6 flex flex-col md:flex-row gap-4">
           <img
-            src={`https://image.tmdb.org/t/p/w300/${poster_path}`}
+            src={movie.posterUrl || `https://image.tmdb.org/t/p/w300/${poster_path}`}
             alt={title}
-            className="rounded-xl w-full md:w-[200px] object-cover"
+            className="rounded w-full md:w-[200px] object-cover"
             loading="lazy"
           />
           <div className="flex-1">
             <img
               src={`https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`}
               alt="Backdrop"
-              className="rounded-xl w-full h-full object-cover"
+              className="rounded w-full h-full object-cover"
               loading="lazy"
             />
           </div>
@@ -106,7 +106,7 @@ const MovieModal = ({ movie, onClose }) => {
           {movie.trailerKey ? (
               <div className="aspect-video mb-4">
                 <iframe
-                  className="w-full h-full rounded-lg"
+                  className="w-full h-full rounded"
                   src={`https://www.youtube.com/embed/${movie.trailerKey}`}
                   frameBorder="0"
                   allowFullScreen
@@ -123,7 +123,7 @@ const MovieModal = ({ movie, onClose }) => {
           {genres.map((genre) => (
             <span
               key={genre.id}
-              className="bg-[#2d2d42] text-sm px-3 py-1 rounded-full"
+              className="bg-[#2d2d42] text-sm px-3 py-1 rounded"
             >
               {genre.name}
             </span>
@@ -153,7 +153,7 @@ const MovieModal = ({ movie, onClose }) => {
               <button
                 onClick={handleAdd}
                 type="button"
-                className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full mt-5 cursor-pointer"
+                className="inline-block bg-indigo-600  text-white px-5 py-2 rounded mt-5 cursor-pointer"
               >
             ➕ Add to Watchlist
             </button>
@@ -177,7 +177,7 @@ const MovieModal = ({ movie, onClose }) => {
               href={homepage}
               target="_blank"
               rel="noreferrer"
-              className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full"
+              className="inline-block bg-indigo-600 text-white px-5 py-2 rounded"
             >
               Visit Homepage →
             </a>

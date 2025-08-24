@@ -40,7 +40,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-between lg:pt-5 pt-5 pb-12 lg:pb-5 items-center bg-primary text-white">
+    <nav className="flex justify-between lg:pt-5 pt-5 pb-12 lg:pb-5 items-center text-white">
       <h2 className="font-bold text-gradient">Watchables</h2>
 
       <div className="md:hidden">
@@ -69,7 +69,7 @@ const Navbar = () => {
           <li>All movies</li>
         </a>
 
-        <li>
+        <li className="block py-2 md:py-0">
           <Link to={"/watchlist"}>WatchList</Link>
         </li>
 
