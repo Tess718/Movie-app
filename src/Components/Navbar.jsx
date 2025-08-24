@@ -85,7 +85,7 @@ const Navbar = () => {
         ) : (
           <Link
             to={"/auth"}
-            className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500"
+            className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500 max-sm:flex  max-sm:justify-center"
             onClick={() => setIsOpen(false)}
           >
             <CircleUser />
