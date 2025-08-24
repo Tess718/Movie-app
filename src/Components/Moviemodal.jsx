@@ -149,12 +149,15 @@ const MovieModal = ({ movie, onClose }) => {
               <span className="text-white font-medium">Language:</span>{' '}
               {spoken_languages.map(l => l.english_name).join(', ') || original_language}
             </p>
-            <button
-          onClick={handleAdd}
-          className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full mt-5"
-        >
-          ➕ Add to Watchlist
-        </button>
+            <div onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={handleAdd}
+                type="button"
+                className="inline-block bg-gradient-to-r from-pink-002 to-blue-001  text-white px-5 py-2 rounded-full mt-5"
+              >
+            ➕ Add to Watchlist
+            </button>
+            </div>
           </div>
           <div>
             <p><span className="text-white font-medium">Budget:</span> ${budget?.toLocaleString() || 'N/A'}</p>
