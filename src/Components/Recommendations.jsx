@@ -10,7 +10,7 @@ const Recommendations = ({ movies, onMovieClick }) => {
   }
 
   return (
-    <div className="w-full lg:pb-[10%] pb-[30%] md:pb-[15%]">
+    <div className="w-full ">
       <Swiper
         spaceBetween={20}
         loop={true}

@@ -220,7 +220,7 @@ const handleCloseModal = () => {
 
 
           {user?.name && (
-            <section className="mt-10">
+            <section className="mt-10 lg:pb-[10%] pb-[30%] md:pb-[15%]">
               <h2 className='pb-8'>Recommended for {user.name}</h2>
               {loadingRecs ? (
                 <div className='grid place-content-center'>
