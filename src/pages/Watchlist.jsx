@@ -4,7 +4,6 @@ import { account, getWatchlist, removeFromWatchlist } from "../appwrite";
 import { ArrowBigLeftDash } from "lucide-react";
 import { Link } from "react-router-dom";
 import Spinner from "../Components/Spinner";
-import Moviemodal from "../Components/Moviemodal";
 
 
 const Watchlist = () => {
@@ -64,8 +63,7 @@ const Watchlist = () => {
           {watchlist.map((movie) => (
             <div key={movie.$id} 
             className="bg-gray-800 p-3 rounded cursor-pointer"
-            onClick={() => setSelectedMovie(movie)}
-
+            
             >
               <img
                 src={movie.posterUrl}
@@ -82,13 +80,6 @@ const Watchlist = () => {
             </div>
           ))}
         </div>
-      )}
-
-       {selectedMovie && (
-        <Moviemodal
-          movie={selectedMovie}
-          onClose={() => setSelectedMovie(null)}
-        />
       )}
     </div>
   );

@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from "react";
-import { addToWatchlist } from "../appwrite";
-import { account } from "../appwrite";
-
+import { addToWatchlist, account } from "../appwrite";
+import Toast from "./Toast"; // ✅ import Toast
 
 const MovieModal = ({ movie, onClose }) => {
   if (!movie) return null;
@@ -23,45 +21,46 @@ const MovieModal = ({ movie, onClose }) => {
     budget,
     revenue,
     tagline,
-    production_countries = []
+    production_countries = [],
   } = movie;
-  
-  const year = release_date ? release_date.split('-')[0] : 'NA';
-  
+
+  const year = release_date ? release_date.split("-")[0] : "NA";
+
+  const [userId, setUserId] = useState(null);
+  const [toast, setToast] = useState(""); // ✅ use toast state instead of message
+
   useEffect(() => {
-   // Check if logged in
-   account.get().then(
-     (user) => setUserId(user.$id),
-     () => setUserId(null)
-   );
- }, []);
-
-
-    const [userId, setUserId] = useState(null);
-    const [message, setMessage] = useState("");
+    account.get().then(
+      (user) => setUserId(user.$id),
+      () => setUserId(null)
+    );
+  }, []);
 
   const handleAdd = async () => {
-  try {
-    const user = await account.get();
-    const res = await addToWatchlist(user.$id, movie);
+    try {
+      const user = await account.get();
+      const res = await addToWatchlist(user.$id, movie);
 
-    if (!res.success) {
-      setMessage("⚠️ " + res.message);
-    } else {
-      setMessage("✅ " + res.message);
+      if (!res.success) {
+        setToast("⚠️ " + res.message);
+      } else {
+        setToast("✅ " + res.message);
+      }
+    } catch (err) {
+      setToast("❌ Failed to add movie, please log in if you haven't.");
+      console.error(err);
     }
-  } catch (err) {
-    setMessage("❌ Failed to add movie.");
-    console.error(err);
-  }
-};
-
-  if (!movie) return null;
-  
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6" onClick={onClose}>
-      <div className="bg-[#1c1c28] text-white max-w-5xl w-full rounded p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6"
+      onClick={onClose}
+    >
+      <div
+        className="bg-[#1c1c28] text-white max-w-5xl w-full rounded p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]"
+        onClick={(e) => e.stopPropagation()} // ✅ prevent backdrop close
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -73,17 +72,17 @@ const MovieModal = ({ movie, onClose }) => {
         {/* Header */}
         <h2 className="text-3xl font-semibold mb-2">{title}</h2>
         <p className="text-gray-400">
-          {year} • {movie.adult ? '18+' : 'PG-13'} • {runtime} min
+          {year} • {movie.adult ? "18+" : "PG-13"} • {runtime} min
         </p>
 
         {/* Rating */}
         <div className="flex items-center gap-2 mt-2">
           <div className="bg-yellow-500 text-black px-2 py-1 rounded text-sm font-semibold flex items-center gap-1">
-            ⭐ {vote_average?.toFixed(1) || 'NA'}
+            ⭐ {vote_average?.toFixed(1) || "NA"}
           </div>
         </div>
 
-        {/* Poster + Trailer Section */}
+        {/* Poster + Backdrop */}
         <div className="mt-6 flex flex-col md:flex-row gap-4">
           <img
             src={movie.posterUrl || `https://image.tmdb.org/t/p/w300/${poster_path}`}
@@ -101,21 +100,21 @@ const MovieModal = ({ movie, onClose }) => {
           </div>
         </div>
 
-          {/* Trailer */}
+        {/* Trailer */}
         <div className="mt-6">
           {movie.trailerKey ? (
-              <div className="aspect-video mb-4">
-                <iframe
-                  className="w-full h-full rounded"
-                  src={`https://www.youtube.com/embed/${movie.trailerKey}`}
-                  frameBorder="0"
-                  allowFullScreen
-                  title="Movie Trailer"
-                ></iframe>
-              </div>
-            ) : (
-              <p>No trailer available.</p>
-            )}
+            <div className="aspect-video mb-4">
+              <iframe
+                className="w-full h-full rounded"
+                src={`https://www.youtube.com/embed/${movie.trailerKey}`}
+                frameBorder="0"
+                allowFullScreen
+                title="Movie Trailer"
+              ></iframe>
+            </div>
+          ) : (
+            <p>No trailer available.</p>
+          )}
         </div>
 
         {/* Genres */}
@@ -133,65 +132,79 @@ const MovieModal = ({ movie, onClose }) => {
         {/* Overview */}
         <div className="mt-4">
           <h2 className="text-xl font-semibold mb-2">Overview</h2>
-          <p className="text-gray-300">{overview || 'No description available.'}</p>
+          <p className="text-gray-300">
+            {overview || "No description available."}
+          </p>
         </div>
 
         {/* Info Grid */}
         <div className="mt-6 grid md:grid-cols-2 gap-4 text-sm text-gray-300">
           <div>
-            <p><span className="text-white font-medium">Release date:</span> {release_date}</p>
-            <p><span className="text-white font-medium">Status:</span> {status}</p>
             <p>
-              <span className="text-white font-medium">Countries:</span>{' '}
-              {production_countries.map(c => c.name).join(', ') || 'N/A'}
+              <span className="text-white font-medium">Release date:</span>{" "}
+              {release_date}
             </p>
             <p>
-              <span className="text-white font-medium">Language:</span>{' '}
-              {spoken_languages.map(l => l.english_name).join(', ') || original_language}
+              <span className="text-white font-medium">Status:</span> {status}
             </p>
-            <div onClick={(e) => e.stopPropagation()}>
-              <button
-                onClick={handleAdd}
-                type="button"
-                className="inline-block bg-indigo-600  text-white px-5 py-2 rounded mt-5 cursor-pointer"
-              >
-            ➕ Add to Watchlist
+            <p>
+              <span className="text-white font-medium">Countries:</span>{" "}
+              {production_countries.map((c) => c.name).join(", ") || "N/A"}
+            </p>
+            <p>
+              <span className="text-white font-medium">Language:</span>{" "}
+              {spoken_languages.map((l) => l.english_name).join(", ") ||
+                original_language}
+            </p>
+
+            {/* Add Button */}
+            <button
+              onClick={handleAdd}
+              type="button"
+              className="inline-block bg-indigo-600 text-white px-5 py-2 rounded mt-5 cursor-pointer"
+            >
+              ➕ Add to Watchlist
             </button>
-            </div>
           </div>
           <div>
-            <p><span className="text-white font-medium">Budget:</span> ${budget?.toLocaleString() || 'N/A'}</p>
-            <p><span className="text-white font-medium">Revenue:</span> ${revenue?.toLocaleString() || 'N/A'}</p>
+            <p>
+              <span className="text-white font-medium">Budget:</span> $
+              {budget?.toLocaleString() || "N/A"}
+            </p>
+            <p>
+              <span className="text-white font-medium">Revenue:</span> $
+              {revenue?.toLocaleString() || "N/A"}
+            </p>
             {tagline && (
-              <p><span className="text-white font-medium">Tagline:</span> “{tagline}”</p>
+              <p>
+                <span className="text-white font-medium">Tagline:</span> “
+                {tagline}”
+              </p>
             )}
             <p>
-              <span className="text-white font-medium">Production:</span>{' '}
-              {production_companies.map(c => c.name).join(', ') || 'N/A'}
+              <span className="text-white font-medium">Production:</span>{" "}
+              {production_companies.map((c) => c.name).join(", ") || "N/A"}
             </p>
 
             {/* Homepage Button */}
-        {homepage && (
-          <div className="mt-5">
-            <a
-              href={homepage}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block bg-indigo-600 text-white px-5 py-2 rounded"
-            >
-              Visit Homepage →
-            </a>
-          </div>
-        )}
-
+            {homepage && (
+              <div className="mt-5">
+                <a
+                  href={homepage}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block bg-indigo-600 text-white px-5 py-2 rounded"
+                >
+                  Visit Homepage →
+                </a>
+              </div>
+            )}
           </div>
         </div>
-
-
-
-        {message && <p className="mt-3 text-sm text-center">{message}</p>}
-
       </div>
+
+      {/* ✅ Toast for feedback */}
+      {toast && <Toast message={toast} onClose={() => setToast("")} />}
     </div>
   );
 };

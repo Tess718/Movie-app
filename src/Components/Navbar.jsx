@@ -1,38 +1,23 @@
 // Navbar.jsx
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { account } from "../appwrite"; // ✅ import account
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { CircleUser, LogOut } from "lucide-react";
+import { useState } from "react";
+import { Menu, X, CircleUser, LogOut } from "lucide-react";
+import { account } from "../appwrite";
+import { useNavigate, Link } from "react-router-dom";
 import Toast from "./Toast";
 
-const Navbar = () => {
+const Navbar = ({ user, setUser, setRecs }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [toast, setToast] = useState("");
   const navigate = useNavigate();
-    const [toast, setToast] = useState("");
-
-  // Check if user is logged in
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const currentUser = await account.get();
-        setUser(currentUser);
-      } catch {
-        setUser(null);
-      }
-    };
-    checkUser();
-  }, []);
 
   // Logout function
   const handleLogout = async () => {
     try {
       await account.deleteSession("current"); // logs out current session
-      setUser(null);
+      setUser(null); // ✅ clear user in Home
+      setRecs([]);   // ✅ clear recommendations too
       setToast("✅ Logged out successfully!");
-      navigate("/"); // redirect to home after logout
+      navigate("/"); 
     } catch (err) {
       setToast("❌ Error logging out");
       console.log(err);
@@ -73,30 +58,27 @@ const Navbar = () => {
           <Link to={"/watchlist"}>WatchList</Link>
         </li>
 
-
         {/* Auth Buttons */}
-        <div className="max-sm:flex  max-sm:justify-center">
-        {user ? (
-          <button
-             onClick={() => {
-              handleLogout();
-              setIsOpen(false);
-            }}
-
-            className="block py-2 md:py-0 text-red-400 hover:text-red-500 cursor-pointer"
-          >
-            <LogOut />
-          </button>
-        ) : (
-          <Link
-            to={"/auth"}
-            className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500 "
-            onClick={() => setIsOpen(false)}
-          >
-            <CircleUser />
-          </Link>
-        )}
-
+        <div className="max-sm:flex max-sm:justify-center">
+          {user ? (
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsOpen(false);
+              }}
+              className="block py-2 md:py-0 text-red-400 hover:text-red-500 cursor-pointer"
+            >
+              <LogOut />
+            </button>
+          ) : (
+            <Link
+              to={"/auth"}
+              className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500"
+              onClick={() => setIsOpen(false)}
+            >
+              <CircleUser />
+            </Link>
+          )}
         </div>
       </ul>
 

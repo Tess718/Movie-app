@@ -6,6 +6,9 @@ import Moviecard from '../Components/Moviecard';
 import { getTrendingMovies, updateSearchCount } from '../appwrite';
 import Navbar from '../Components/Navbar';
 import Moviemodal from '../Components/Moviemodal';
+import { fetchRecommendations } from '../recommendations';
+import { account } from "../appwrite";
+import Recommendations from '../Components/Recommendations';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -38,7 +41,11 @@ const Home = () => {
 
   const [isModalLoading, setIsModalLoading] = useState(false);
 
-  
+  const [user, setUser] = useState(null);
+
+  const [recs, setRecs] = useState([]);
+
+  const [loadingRecs, setLoadingRecs] = useState(true);
 
 
 
@@ -130,6 +137,34 @@ const handleMovieClick = async (movieId) => {
 };
 
 
+ useEffect(() => {
+    const getUserAndRecs = async () => {
+      try {
+        const current = await account.get();
+        setUser(current);
+
+        // kick off recommendations in background
+        const recommended = await fetchRecommendations(current.$id);
+        setRecs(recommended);
+      } catch {
+        // not logged in
+      } finally {
+        setLoadingRecs(false);
+      }
+    };
+
+    getUserAndRecs();
+  }, []);
+
+useEffect(() => {
+  if (!user) {
+    setRecs([]);
+  }
+}, [user]);
+
+  
+
+
 const handleCloseModal = () => {
   setShowModal(false);
   setSelectedMovie(null);
@@ -152,7 +187,7 @@ const handleCloseModal = () => {
   return (
     <div>
       <div className="bg-img lg:px-[70px] px-5">
-        <Navbar />
+          <Navbar user={user} setUser={setUser} setRecs={setRecs}/>
         <div className='flex md:pt-[10%] items-center justify-between flex-col-reverse md:flex-row gap-10 lg:gap-0'>
           <div className='basis-1/2'>
               <h1 className='lg:text-6xl md:text-4xl md:leading-12 lg:leading-tight text-3xl text-center md:text-start'>FIND MOVIES <br /> <span className='text-gradient'>TVSHOWS AND MORE</span> </h1>
@@ -171,7 +206,7 @@ const handleCloseModal = () => {
       <div className='lg:px-[70px] px-5'>
           {trendingMovies.length > 0 && (
           <section className='trending' id='trending'>
-            <h2 className=''>Trending Movies</h2>
+            <h2>Trending Movies</h2>
             <ul>
               {trendingMovies.map((movie, index) => (
                 <li key={movie.$id}>
@@ -183,8 +218,26 @@ const handleCloseModal = () => {
           </section>
         )}
 
+
+          {user?.name && (
+            <section className="mt-10">
+              <h2 className='pb-8'>Recommended for {user.name}</h2>
+              {loadingRecs ? (
+                <div className='grid place-content-center'>
+                  <Spinner />
+                </div>
+              ) : recs.length > 0 ? (
+                <Recommendations movies={recs} onMovieClick={handleMovieClick} />
+              ) : (
+                <p className="text-gray-400">No recommendations yet. Add some movies to your watchlist!</p>
+              )}
+            </section>
+          )}
+
+
+
         <section className='all-movies' id='all-movies'>
-            <h2 className=''>All Movies</h2>
+            <h2>All Movies</h2>
 
             {isLoading ? (
               <div className='grid place-content-center'>

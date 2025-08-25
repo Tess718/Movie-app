@@ -40,9 +40,9 @@ const Auth = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-img text-white overflow-x-hidden">
-      <div className="flex max-md:px-10">
-        <img src="https://admin.itsnicethat.com/images/3CzWUmmXvOtHmdH0J1VNY-f9riA=/254910/format-webp%7Cwidth-1440/4._Oppenheimer.jpg" alt="" className="w-96 h-130 object-cover object-top max-sm:hidden rounded-l" />
-        <div className="bg-gray-800 p-8 shadow-lg w-96 flex flex-col justify-center rounded-r">
+      <div className="flex">
+        <img src="https://admin.itsnicethat.com/images/3CzWUmmXvOtHmdH0J1VNY-f9riA=/254910/format-webp%7Cwidth-1440/4._Oppenheimer.jpg" alt="auth image" className="w-96 h-130 object-cover object-top max-sm:hidden rounded-l" />
+        <div className="bg-gray-800 p-8 shadow-lg w-96 flex flex-col justify-center lg:rounded-r rounded">
           <h2 className="text-2xl font-bold mb-6 text-center">
             {isLogin ? "Login" : "Sign Up"}
           </h2>

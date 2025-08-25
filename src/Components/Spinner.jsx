@@ -2,7 +2,7 @@ import './Spinner.css'
 
 const Spinner = () => {
   return ( 
-<div className="loader">
+<div className="loader z-90 relative">
   <div className="loader__bar"></div>
   <div className="loader__bar"></div>
   <div className="loader__bar"></div>
