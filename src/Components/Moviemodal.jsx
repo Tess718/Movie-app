@@ -64,7 +64,7 @@ const MovieModal = ({ movie, onClose }) => {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-6 text-gray-300 hover:text-white text-2xl"
+          className="absolute top-4 right-6 text-gray-300 hover:text-white text-2xl cursor-pointer"
         >
           ×
         </button>

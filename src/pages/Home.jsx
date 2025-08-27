@@ -200,7 +200,7 @@ const handleCloseModal = () => {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://tswatchables.netlify.app/" />
-        <meta property="og:image" content="https://yourwebsite.com/preview.jpg" />
+        <meta property="og:image" content="https://tswatchables.netlify.app/preview.png" />
       </Helmet>
       <div className="bg-img lg:px-[70px] px-5">
           <Navbar user={user} setUser={setUser} setRecs={setRecs}/>
