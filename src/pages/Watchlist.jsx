@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { account, getWatchlist, removeFromWatchlist } from "../appwrite";
 import { ArrowBigLeftDash } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 import Spinner from "../Components/Spinner";
 
 
@@ -10,7 +11,6 @@ const Watchlist = () => {
   const [user, setUser] = useState(null);
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -48,6 +48,22 @@ const Watchlist = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+      <title>Watchables | My Watchlist</title>
+      <meta
+        name="description"
+        content="View and manage your Watchables watchlist. Keep track of movies you want to watch and revisit your saved favorites anytime."
+      />
+      <meta property="og:title" content="Watchables - My Watchlist" />
+      <meta
+        property="og:description"
+        content="Check your saved movies in Watchables. Organize your watchlist and never lose track of what to watch next."
+      />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://tswatchables.netlify.app/watchlist" />
+      <meta property="og:image" content="https://yourwebsite.com/watchlist-preview.jpg" />
+    </Helmet>
+
         <div className="mb-6 border-b border-gray-700 pb-6">
             <Link to={"/"}>
                 <button className="bg-gray-800 text-white px-4 py-2 rounded flex gap-1 cursor-pointer">
@@ -57,7 +73,7 @@ const Watchlist = () => {
         </div>
         <h2 className="text-3xl font-bold text-center mb-6">🎬 {user.name}'s Watchlist</h2>
       {watchlist.length === 0 ? (
-        <p>No movies added yet.</p>
+        <p className="text-center text-white text-5xl">No movies added yet.</p>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {watchlist.map((movie) => (

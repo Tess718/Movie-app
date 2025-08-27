@@ -9,6 +9,7 @@ import Moviemodal from '../Components/Moviemodal';
 import { fetchRecommendations } from '../recommendations';
 import { account } from "../appwrite";
 import Recommendations from '../Components/Recommendations';
+import { Helmet } from 'react-helmet-async';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -186,6 +187,21 @@ const handleCloseModal = () => {
 
   return (
     <div>
+       <Helmet>
+        <title>Watchables | Discover Movies</title>
+        <meta
+          name="description"
+          content="Explore trending movies, manage your watchlist, and get personalized recommendations based on your favorites."
+        />
+        <meta property="og:title" content="Watchables - Movie Discovery" />
+        <meta
+          property="og:description"
+          content="Find trending movies, save them to your watchlist, and get recommendations just for you."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://tswatchables.netlify.app/" />
+        <meta property="og:image" content="https://yourwebsite.com/preview.jpg" />
+      </Helmet>
       <div className="bg-img lg:px-[70px] px-5">
           <Navbar user={user} setUser={setUser} setRecs={setRecs}/>
         <div className='flex md:pt-[10%] items-center justify-between flex-col-reverse md:flex-row gap-10 lg:gap-0'>

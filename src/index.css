@@ -140,7 +140,7 @@
 }
 
 @utility text-gradient {
-  @apply bg-gradient-to-r from-pink-002 to-blue-001 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-[#bb63ff] to-[#5b58eb] bg-clip-text text-transparent;
 }
 
 @utility fancy-text {
