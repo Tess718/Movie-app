@@ -13,7 +13,6 @@ export const fetchRecommendations = async (userId) => {
       [Query.equal("userId", userId)]
     );
 
-    console.log("Watchlist:", watchlist.documents);
 
     if (!watchlist.documents.length) {
       return [];
@@ -33,7 +32,6 @@ export const fetchRecommendations = async (userId) => {
     }
 
     const data = await res.json();
-    console.log("TMDB response:", data);
 
     return data.results || [];
   } catch (err) {

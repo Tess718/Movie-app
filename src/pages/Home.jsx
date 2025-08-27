@@ -273,7 +273,7 @@ const handleCloseModal = () => {
         
         {isModalLoading && (
           <div className="fixed inset-0 flex items-center justify-center">
-            <Spinner /> {/* or any loader */}
+            <Spinner /> 
           </div>
         )}
 

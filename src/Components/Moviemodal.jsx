@@ -36,6 +36,17 @@ const MovieModal = ({ movie, onClose }) => {
     );
   }, []);
 
+  // ✅ Lock/unlock body scroll when modal opens/closes
+  useEffect(() => {
+    // Lock body scroll when modal opens
+    document.body.style.overflow = 'hidden';
+    
+    // Cleanup function to restore scroll when modal closes
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   const handleAdd = async () => {
     try {
       const user = await account.get();
@@ -52,10 +63,16 @@ const MovieModal = ({ movie, onClose }) => {
     }
   };
 
+  // ✅ Enhanced close handler to ensure body scroll is restored
+  const handleClose = () => {
+    document.body.style.overflow = 'unset';
+    onClose();
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6"
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div
         className="bg-[#1c1c28] text-white max-w-5xl w-full rounded p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]"
@@ -63,7 +80,7 @@ const MovieModal = ({ movie, onClose }) => {
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-4 right-6 text-gray-300 hover:text-white text-2xl cursor-pointer"
         >
           ×
@@ -177,8 +194,8 @@ const MovieModal = ({ movie, onClose }) => {
             </p>
             {tagline && (
               <p>
-                <span className="text-white font-medium">Tagline:</span> “
-                {tagline}”
+                <span className="text-white font-medium">Tagline:</span> "
+                {tagline}"
               </p>
             )}
             <p>
