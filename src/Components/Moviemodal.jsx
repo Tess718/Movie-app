@@ -79,7 +79,7 @@ const MovieModal = ({ movie, onClose }) => {
       onClick={handleClose}
     >
       <div
-        className="bg-[#1c1c28] text-white max-w-5xl w-full rounded p-6 shadow-2xl relative overflow-y-auto max-h-[90vh]"
+        className="bg-[#1c1c28] text-white max-w-5xl w-full rounded p-6 shadow-2xl relative overflow-y-auto max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900"
         onClick={(e) => e.stopPropagation()} // ✅ prevent backdrop close
       >
         {/* Close Button */}
