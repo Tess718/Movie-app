@@ -105,7 +105,7 @@ const SearchBar = ({ onMovieClick }) => {
           {results.map((movie) => (
             <li
               key={movie.id}
-              className="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 cursor-pointer"
+              className="flex items-center gap-3 px-3 py-2  hover:bg-gray-700 cursor-pointer "
               onClick={() => handleSelect(movie)}
             >
               <div className="flex gap-6">
@@ -116,9 +116,9 @@ const SearchBar = ({ onMovieClick }) => {
                       : FALLBACK_POSTER
                   }
                   alt={movie.title}
-                  className="w-12 h-16 object-cover object-top rounded"
+                  className="w-25 h-29 object-cover object-top rounded relative"
                 />
-                <p className="text-white">{movie.title}</p>
+                <p className="text-white relative">{movie.title}</p>
               </div>
             </li>
           ))}
