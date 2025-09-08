@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react'
 import { useDebounce } from 'use-debounce';
-import Search from '../Components/Search'
 import Spinner from '../Components/Spinner';
 import Moviecard from '../Components/Moviecard';
 import { getTrendingMovies, updateSearchCount } from '../appwrite';
@@ -10,6 +9,7 @@ import { fetchRecommendations } from '../recommendations';
 import { account } from "../appwrite";
 import Recommendations from '../Components/Recommendations';
 import { Helmet } from 'react-helmet-async';
+import SearchBar from '../Components/SearchBar';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -208,8 +208,7 @@ const handleCloseModal = () => {
           <div className='basis-1/2'>
               <h1 className='lg:text-6xl md:text-4xl md:leading-12 lg:leading-tight text-3xl text-center md:text-start'>FIND MOVIES <br /> <span className='text-gradient'>TVSHOWS AND MORE</span> </h1>
               <p className='text-white text-center md:text-start'>Discover the ultimate movie hub, where cinema lovers explore the latest blockbusters, timeless classics, and hidden gems. Dive into reviews, trailers, and exclusive behind-the-scenes content, all in one place!</p>
-
-              <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+              <SearchBar onMovieClick={handleMovieClick}/>
             </div>
           <div className="basis-1/2 mt-20 md:mt-0">
           <div className='flex md:justify-end justify-center'>

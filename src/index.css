@@ -158,10 +158,9 @@
   }
 }
 
-.bg-img{
+.bg-img {
   background: url('/BG.png') no-repeat center center/cover;
 }
-
 .no-scroll {
   overflow: hidden;
 }
