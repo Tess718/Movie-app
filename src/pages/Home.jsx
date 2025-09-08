@@ -102,11 +102,13 @@ const Home = () => {
 
 const handleMovieClick = async (movieId) => {
   setIsModalLoading(true);
-  setSelectedMovie(null);      
+  setSelectedMovie(null);
+
   try {
+    // fetch movie details
     const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
       headers: {
-        accept: 'application/json',
+        accept: "application/json",
         Authorization: `Bearer ${API_KEY}`,
       },
     });
@@ -115,27 +117,39 @@ const handleMovieClick = async (movieId) => {
     // fetch trailer
     const videoRes = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
       headers: {
-        accept: 'application/json',
+        accept: "application/json",
         Authorization: `Bearer ${API_KEY}`,
       },
     });
     const videoData = await videoRes.json();
 
-    // Get first YouTube trailer
     const trailer = videoData.results.find(
-      (vid) => vid.type === 'Trailer' && vid.site === 'YouTube'
+      (vid) => vid.type === "Trailer" && vid.site === "YouTube"
     );
+
+    // ✅ fetch cast
+    const creditsRes = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
+    const creditsData = await creditsRes.json();
 
     setSelectedMovie({
       ...data,
       trailerKey: trailer?.key || null,
+      cast: creditsData.cast || [], // ✅ add cast
     });
 
     setShowModal(true);
   } catch (error) {
-    console.error('Error loading movie details or trailer:', error);
+    console.error("Error loading movie details:", error);
+  } finally {
+    setIsModalLoading(false);
   }
 };
+
 
 
  useEffect(() => {

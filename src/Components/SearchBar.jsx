@@ -1,51 +1,56 @@
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
-import { updateSearchCount } from "../appwrite"; // your existing function
+import { updateSearchCount } from "../appwrite";
+import Spinner from "./Spinner";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 const FALLBACK_POSTER =
-  "No-Movie.svg";
+"No-Movie.svg";
 
 const SearchBar = ({ onMovieClick }) => {
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [debouncedQuery] = useDebounce(query, 800); // debounce
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      if (!debouncedQuery.trim()) {
-        setResults([]);
-        return;
-      }
+useEffect(() => {
+  const fetchResults = async () => {
+    if (!debouncedQuery.trim()) {
+      setResults([]);
+      return;
+    }
 
-      try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(debouncedQuery)}&page=1`,
-          {
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${API_KEY}`,
-            },
-          }
-        );
-
-        if (!res.ok) throw new Error("Failed to fetch movies");
-
-        const data = await res.json();
-        setResults(data.results || []);
-
-        // ✅ update Appwrite trending search if results exist
-        if (data.results.length > 0) {
-          await updateSearchCount(debouncedQuery, data.results[0]);
+    setLoading(true); // start loader
+    try {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(debouncedQuery)}&page=1`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${API_KEY}`,
+          },
         }
-      } catch (err) {
-        console.error("Search error:", err);
-      }
-    };
+      );
 
-    fetchResults();
-  }, [debouncedQuery]);
+      if (!res.ok) throw new Error("Failed to fetch movies");
+
+      const data = await res.json();
+      setResults(data.results || []);
+
+      if (data.results.length > 0) {
+        await updateSearchCount(debouncedQuery, data.results[0]);
+      }
+    } catch (err) {
+      console.error("Search error:", err);
+    } finally {
+      setLoading(false); // stop loader
+    }
+  };
+
+  fetchResults();
+}, [debouncedQuery]);
+
 
   const handleSelect = (movie) => {
     onMovieClick(movie.id); // parent handles modal
@@ -80,7 +85,13 @@ const SearchBar = ({ onMovieClick }) => {
     )}
   </div>
 
-      {results.length > 0 && (
+      {loading && (
+        <div className="absolute w-full flex items-center justify-center z-50 p-3 text-center">
+          <Spinner />
+        </div>
+      )}
+
+      {!loading && results.length > 0 && (
         <ul className="absolute w-full bg-gray-900 rounded mt-1 max-h-64 overflow-y-auto shadow-lg z-50 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0">
           {results.map((movie) => (
             <li

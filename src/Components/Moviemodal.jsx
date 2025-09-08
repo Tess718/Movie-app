@@ -36,6 +36,10 @@ const MovieModal = ({ movie, onClose }) => {
     );
   }, []);
 
+  const FALLBACK_ACTOR =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7csvPWMdfAHEAnhIRTdJKCK5SPK4cHfskow&s";
+
+
   // ✅ Lock/unlock body scroll when modal opens/closes
   useEffect(() => {
     // Lock body scroll when modal opens
@@ -153,6 +157,29 @@ const MovieModal = ({ movie, onClose }) => {
             {overview || "No description available."}
           </p>
         </div>
+
+        {movie.cast && movie.cast.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-xl font-semibold mb-2">Top Cast</h2>
+            <div className="flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+              {movie.cast.slice(0, 10).map((actor) => (
+                <div key={actor.cast_id} className="flex-shrink-0 w-24 text-center">
+                  <img
+                    src={
+                      actor.profile_path
+                        ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                        : FALLBACK_ACTOR
+                    }
+                    alt={actor.name}
+                    className="w-24 h-32 object-cover rounded"
+                  />
+                  <p className="mt-2 text-sm font-medium">{actor.name}</p>
+                  <p className="text-xs text-gray-400">{actor.character}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Info Grid */}
         <div className="mt-6 grid md:grid-cols-2 gap-4 text-sm text-gray-300">
