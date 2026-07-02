@@ -124,10 +124,12 @@ const Watchlist = () => {
 
           {/* Heading and Action Bar */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-3">
-              <Clapperboard />
-              <h2 className="text-3xl font-bold">{user.name}'s Watchlist</h2>
-              <span className="border border-cyan-500/50 bg-cyan-950/45 text-cyan-400 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+            <div className="flex md:items-center flex-col md:flex-row gap-3">
+              <div className="flex gap-3">
+                <Clapperboard />
+                <h2 className="text-3xl font-bold">{user.name}'s Watchlist</h2>
+              </div>
+              <span className="border border-cyan-500/50 bg-cyan-950/45 text-cyan-400 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider max-sm:w-fit">
                 {watchlist.length} {watchlist.length === 1 ? "Movie" : "Movies"}
               </span>
             </div>
