@@ -106,7 +106,7 @@ const Watchlist = () => {
 
       <div>
         {/* Render Original Navbar at the top */}
-        <div className="bg-img lg:px-[70px] px-5">
+        <div className="lg:px-[70px] px-5">
           <Navbar user={user} setUser={setUser} setRecs={() => {}} />
         </div>
 

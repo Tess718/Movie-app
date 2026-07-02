@@ -1,6 +1,6 @@
 import { useState } from "react";
-import MovieCard from "../components/MovieCard";
-import MovieModal from "../components/MovieModal";
+import MovieCard from "../Components/Moviecard";
+import MovieModal from "../Components/Moviemodal";
 
 const moods = [
   { name: "Happy", genreId: 35 }, // Comedy
