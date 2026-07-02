@@ -19,7 +19,7 @@ const Recommendations = ({ movies, onMovieClick }) => {
           delay: 2500,
           disableOnInteraction: true,
         }}
-        slidesPerView={6}
+        slidesPerView={2}
         breakpoints={{
           375: { slidesPerView: 2 },
           640: { slidesPerView: 3 },

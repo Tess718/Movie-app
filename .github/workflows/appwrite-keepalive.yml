@@ -1,0 +1,40 @@
+name: Appwrite Keep-Alive
+
+on:
+  schedule:
+    - cron: '0 0 */5 * *' # Runs every 5 days (Appwrite Free tier pauses after 7 days of inactivity)
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Appwrite API
+        env:
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+        run: |
+          if [ -z "$APPWRITE_PROJECT_ID" ] || [ -z "$APPWRITE_API_KEY" ]; then
+            echo "❌ Error: APPWRITE_PROJECT_ID or APPWRITE_API_KEY secrets are not set in GitHub repository!"
+            exit 1
+          fi
+
+          echo "Pinging Appwrite API to keep project alive..."
+          
+          # Perform a database list operation to simulate legitimate development activity
+          ENDPOINT="${{ secrets.APPWRITE_ENDPOINT || 'https://fra.cloud.appwrite.io/v1' }}"
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "X-Appwrite-Project: $APPWRITE_PROJECT_ID" \
+            -H "X-Appwrite-Key: $APPWRITE_API_KEY" \
+            "$ENDPOINT/databases")
+
+          echo "Response HTTP Status: $STATUS_CODE"
+
+          if [ "$STATUS_CODE" -eq 200 ]; then
+            echo "✅ Heartbeat check succeeded! Appwrite project is active."
+          elif [ "$STATUS_CODE" -eq 401 ] || [ "$STATUS_CODE" -eq 403 ]; then
+            echo "⚠️ Heartbeat reached Appwrite but got auth error ($STATUS_CODE). Check API Key scopes (needs 'databases.read')."
+          else
+            echo "❌ Heartbeat failed with status $STATUS_CODE. Project might be paused or down."
+            exit 1
+          fi
