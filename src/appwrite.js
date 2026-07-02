@@ -1,5 +1,5 @@
 // appwrite.js
-import { Client, Databases, Account, ID, Query, Permission, Role } from "appwrite";
+import { Client, Databases, Account, ID, Query, Permission, Role, Avatars } from "appwrite";
 
 const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID;
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
@@ -13,6 +13,7 @@ const client = new Client()
 
 export const account = new Account(client);
 export const databases = new Databases(client);
+export const avatars = new Avatars(client);
 export { ID, Query };
 
 // --- WATCHLIST FUNCTIONS ---

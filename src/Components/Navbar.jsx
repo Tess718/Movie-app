@@ -1,7 +1,7 @@
 // Navbar.jsx
 import { useState } from "react";
 import { Menu, X, CircleUser, LogOut } from "lucide-react";
-import { account } from "../appwrite";
+import { account, avatars } from "../appwrite";
 import { useNavigate, Link } from "react-router-dom";
 import Toast from "./Toast";
 
@@ -35,7 +35,7 @@ const Navbar = ({ user, setUser, setRecs }) => {
       </div>
 
       <ul
-        className={`md:flex gap-5 absolute md:static max-sm:bg-gray-900 w-full h-full md:h-auto md:w-auto left-0 top-16 md:top-auto px-5 md:px-0 py-5 md:py-0 transition-all z-5 text-center lg:text-start ${
+        className={`md:flex gap-5 absolute md:static items-center max-sm:bg-gray-900 w-full h-full md:h-auto md:w-auto left-0 top-16 md:top-auto px-5 md:px-0 py-5 md:py-0 transition-all z-5 text-center lg:text-start ${
           isOpen ? "block" : "hidden"
         }`}
       >
@@ -47,7 +47,7 @@ const Navbar = ({ user, setUser, setRecs }) => {
           <li>Trending</li>
         </a>
         <a
-          href="#all-movies"
+          href="/#all-movies"
           className="block py-2 md:py-0"
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -59,24 +59,37 @@ const Navbar = ({ user, setUser, setRecs }) => {
         </li>
 
         {/* Auth Buttons */}
-        <div className="max-sm:flex max-sm:justify-center">
+        <div className="max-sm:flex max-sm:justify-center items-center gap-4">
           {user ? (
-            <button
-              onClick={() => {
-                handleLogout();
-                setIsOpen(false);
-              }}
-              className="block py-2 md:py-0 text-red-400 hover:text-red-500 cursor-pointer"
-            >
-              <LogOut />
-            </button>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-gray-800/80 px-3 py-1.5 rounded-full border border-gray-700/50">
+                <img
+                  src={avatars.getInitials(user.name || user.email)}
+                  alt={user.name}
+                  className="w-7 h-7 rounded-full object-cover"
+                />
+                <span className="text-sm font-medium text-gray-200 hidden sm:inline-block">
+                  {user.name}
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
+                className="block py-2 md:py-0 text-red-400 hover:text-red-500 cursor-pointer p-1.5 hover:bg-gray-800/50 rounded-full transition-colors"
+                title="Logout"
+              >
+                <LogOut size={20} />
+              </button>
+            </div>
           ) : (
             <Link
               to={"/auth"}
-              className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500"
+              className="block py-2 md:py-0 text-indigo-400 hover:text-indigo-500 p-1.5 hover:bg-gray-800/50 rounded-full transition-colors"
               onClick={() => setIsOpen(false)}
             >
-              <CircleUser />
+              <CircleUser size={24} />
             </Link>
           )}
         </div>
